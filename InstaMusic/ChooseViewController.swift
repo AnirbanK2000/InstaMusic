@@ -24,25 +24,18 @@ class ChooseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUp()
-        getStatus()
-        instantiateSimple()
-    }
-    
-    func setUp() {
-        player.beginGeneratingPlaybackNotifications()
-        NotificationCenter.default.addObserver(self,selector: #selector(songChanged),name: NSNotification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,object: nil)
-    }
-    func getStatus() {
         let status = MPMediaLibrary.authorizationStatus()
         switch status {
             case .authorized:
+                print("authorized")
+                setUp()
                 getSong()
                 break
             case .notDetermined:
                 MPMediaLibrary.requestAuthorization() { status in
                         if status == .authorized {
                             DispatchQueue.main.async {
+                                self.setUp()
                                 self.getSong()
                             }
                         }
@@ -56,10 +49,30 @@ class ChooseViewController: UIViewController {
             break
         }
     }
+    
+    func setUp() {
+        player.beginGeneratingPlaybackNotifications()
+        NotificationCenter.default.addObserver(self,selector: #selector(songChanged),name: NSNotification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,object: nil)
+    }
+    
     func getSong() {
-        titleOfSong = trimSong(song: (player.nowPlayingItem?.title)!)
+        //print(player.nowPlayingItem?.title)
+        //titleOfSong = trimSong(song: (player.nowPlayingItem?.title)!)
+        titleOfSong = player.nowPlayingItem?.title
         artistOfSong = player.nowPlayingItem?.artist
         imageOfSong = player.nowPlayingItem?.artwork?.image(at: simpleContent.songImage.bounds.size)
+        
+        if titleOfSong == nil {
+            simpleContent.isHidden = true
+            segmentedControl.isEnabled = false
+            continueButton.isHidden = true
+        } else {
+            titleOfSong = trimSong(song: (player.nowPlayingItem?.title)!)
+            segmentedControl.isEnabled = true
+            continueButton.isHidden = false
+            instantiateSimple()
+        }
+        
     }
     @objc func songChanged(_ notification: Notification){
         getSong()
@@ -77,9 +90,6 @@ class ChooseViewController: UIViewController {
             instantiateSimple()
         case 1:
             instantiateArtworkBackground()
-        case 2:
-            simpleContent.isHidden = true
-            print("third")
         default:
             break
         }
@@ -105,6 +115,7 @@ class ChooseViewController: UIViewController {
             let vc = segue.destination as? SaveViewController
             vc?.imageExport = export
             vc?.background = colors?.background
+            vc?.textColor = colors?.detail
         }
     }
     

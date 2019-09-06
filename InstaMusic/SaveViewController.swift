@@ -12,12 +12,15 @@ class SaveViewController: UIViewController {
 
     var imageExport: UIImage!
     var background: UIColor?
-    @IBOutlet weak var imagePreview : UIImageView!
+    var textColor: UIColor?
+    @IBOutlet weak var instaLabel: UILabel!
+    @IBOutlet weak var saveLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        imagePreview.image = imageExport
         view.backgroundColor = background
+        instaLabel.textColor = textColor
+        saveLabel.textColor = textColor
     }
     @IBAction func postTapped(_ sender: Any) {
         //shareBackgroundImage()
