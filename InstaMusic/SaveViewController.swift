@@ -12,10 +12,11 @@ class SaveViewController: UIViewController {
 
     var imageExport: UIImage!
     var background: UIColor?
-
+    @IBOutlet weak var imagePreview : UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        imagePreview.image = imageExport
         view.backgroundColor = background
     }
     @IBAction func postTapped(_ sender: Any) {

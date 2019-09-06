@@ -72,12 +72,14 @@ class ChooseViewController: UIViewController {
     
     
     @IBAction func backgroundStyleChanged(_ sender: Any) {
-        switch segmentedControl.selectedSegmentIndex
-        {
+        switch segmentedControl.selectedSegmentIndex {
         case 0:
             instantiateSimple()
         case 1:
             instantiateArtworkBackground()
+        case 2:
+            simpleContent.isHidden = true
+            print("third")
         default:
             break
         }
@@ -124,6 +126,8 @@ class ChooseViewController: UIViewController {
     }
     
     func instantiate() {
+        simpleContent.isHidden = false
+
         let colors = imageOfSong?.getColors()
         
         simpleContent.layer.shadowPath = UIBezierPath(roundedRect: simpleContent.layer.bounds, cornerRadius: 0).cgPath
