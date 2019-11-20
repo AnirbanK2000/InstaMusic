@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14865.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="UCN-S9-yqD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="UCN-S9-yqD">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14819.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,17 +15,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No music is playing. Please go to the Music app and begin playing." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v8g-8s-JBR">
-                                <rect key="frame" x="88" y="305" width="238" height="340"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No music is playing. Please go to the Music app and begin playing." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v8g-8s-JBR">
+                                <rect key="frame" x="88" y="305" width="238" height="400"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="238" id="KWb-uV-Bgt"/>
-                                    <constraint firstAttribute="height" constant="340" id="LAo-xb-fPr"/>
+                                    <constraint firstAttribute="height" constant="400" id="LAo-xb-fPr"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="37"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="34"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="teN-I8-oe2">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="teN-I8-oe2">
                                 <rect key="frame" x="27" y="104" width="360" height="32"/>
                                 <segments>
                                     <segment title="Color"/>
@@ -54,20 +54,20 @@
                                             <constraint firstAttribute="height" constant="230" id="pGn-iD-plu"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attention" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y4x-rM-c63">
-                                        <rect key="frame" x="20" y="360" width="320" height="38.333333333333314"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="32"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song Name" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y4x-rM-c63">
+                                        <rect key="frame" x="20" y="360" width="320" height="31.333333333333314"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="26"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="by Charlie Puth" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aK3-Lh-Brb">
-                                        <rect key="frame" x="20" y="408.33333333333337" width="320" height="21.666666666666686"/>
-                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="by Some Singer" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aK3-Lh-Brb">
+                                        <rect key="frame" x="20" y="401.33333333333337" width="320" height="17"/>
+                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="Jnz-aa-lX3" firstAttribute="leading" secondItem="rOB-dj-MyO" secondAttribute="leading" id="492-rI-AYi"/>
                                     <constraint firstAttribute="bottom" secondItem="Jnz-aa-lX3" secondAttribute="bottom" id="7aq-RU-Rge"/>
@@ -95,13 +95,13 @@
                                 </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ti8-xu-kxv">
-                                <rect key="frame" x="148.66666666666666" y="812" width="116.99999999999997" height="50"/>
-                                <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="frame" x="111" y="812" width="192" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="GrQ-mZ-NrO"/>
-                                    <constraint firstAttribute="width" constant="117" id="Wk4-88-5nd"/>
+                                    <constraint firstAttribute="width" constant="192" id="cIJ-ax-oPe"/>
                                 </constraints>
-                                <state key="normal" title="Continue">
+                                <state key="normal" title="Share to Insta Stories">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
@@ -111,18 +111,20 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBound" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="EgH-3H-DDA" kind="show" id="zvz-gJ-eec"/>
+                                    <action selector="instagramTapped:" destination="lSG-4g-4jA" eventType="touchUpInside" id="G4C-Id-Wpl"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="Ti8-xu-kxv" firstAttribute="centerX" secondItem="Aa4-cO-xdv" secondAttribute="centerX" id="06B-XR-bom"/>
                             <constraint firstItem="rOB-dj-MyO" firstAttribute="centerX" secondItem="Aa4-cO-xdv" secondAttribute="centerX" id="8kB-Ae-cgu"/>
                             <constraint firstItem="Ti8-xu-kxv" firstAttribute="top" secondItem="Jnz-aa-lX3" secondAttribute="bottom" constant="21" id="BVC-ST-i6T"/>
                             <constraint firstItem="v8g-8s-JBR" firstAttribute="centerY" secondItem="Aa4-cO-xdv" secondAttribute="centerY" id="Etm-wX-Tea"/>
                             <constraint firstItem="Ti8-xu-kxv" firstAttribute="bottom" secondItem="Aa4-cO-xdv" secondAttribute="bottom" id="UJ4-Zd-caG"/>
-                            <constraint firstItem="Ti8-xu-kxv" firstAttribute="centerX" secondItem="Aa4-cO-xdv" secondAttribute="centerX" id="XzR-qw-Ya6"/>
+                            <constraint firstItem="teN-I8-oe2" firstAttribute="leading" secondItem="Aa4-cO-xdv" secondAttribute="leading" constant="27" id="brl-tF-CiG"/>
                             <constraint firstItem="v8g-8s-JBR" firstAttribute="centerX" secondItem="Aa4-cO-xdv" secondAttribute="centerX" id="eJS-ts-p7A"/>
+                            <constraint firstItem="Aa4-cO-xdv" firstAttribute="trailing" secondItem="teN-I8-oe2" secondAttribute="trailing" constant="27" id="fZ4-5R-IlM"/>
                             <constraint firstItem="teN-I8-oe2" firstAttribute="top" secondItem="Aa4-cO-xdv" secondAttribute="top" constant="16" id="o7z-uy-Sty"/>
                             <constraint firstItem="teN-I8-oe2" firstAttribute="centerX" secondItem="Aa4-cO-xdv" secondAttribute="centerX" id="oRC-Ak-uXk"/>
                             <constraint firstItem="rOB-dj-MyO" firstAttribute="top" secondItem="teN-I8-oe2" secondAttribute="bottom" constant="16" id="wTq-Eu-sbs"/>
@@ -131,7 +133,8 @@
                     </view>
                     <navigationItem key="navigationItem" title="InstaMusic" id="egH-NF-0LB"/>
                     <connections>
-                        <outlet property="continueButton" destination="Ti8-xu-kxv" id="8RS-MP-Ba3"/>
+                        <outlet property="noSongPlayingLabel" destination="v8g-8s-JBR" id="qid-Kb-bMc"/>
+                        <outlet property="postButton" destination="Ti8-xu-kxv" id="RAj-0S-78w"/>
                         <outlet property="segmentedControl" destination="teN-I8-oe2" id="n1S-Pp-UgK"/>
                         <outlet property="simpleContent" destination="rOB-dj-MyO" id="eHY-NH-CVF"/>
                     </connections>
@@ -139,71 +142,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VXX-OF-Lbc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2773.913043478261" y="125.89285714285714"/>
-        </scene>
-        <!--Save View Controller-->
-        <scene sceneID="bFu-rs-EzH">
-            <objects>
-                <viewController storyboardIdentifier="saveVC" id="EgH-3H-DDA" customClass="SaveViewController" customModule="InstaMusic" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Arf-3F-Lvt">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9tc-z7-UwJ">
-                                <rect key="frame" x="132" y="208" width="150" height="150"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="FPm-ry-Mrq"/>
-                                    <constraint firstAttribute="width" constant="150" id="cQn-Zd-dQE"/>
-                                </constraints>
-                                <state key="normal" image="instagram"/>
-                                <connections>
-                                    <action selector="postTapped:" destination="EgH-3H-DDA" eventType="touchUpInside" id="obo-Xc-oTr"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sbd-nk-rA2">
-                                <rect key="frame" x="132" y="592" width="150" height="150"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="Yay-ZL-AKP"/>
-                                    <constraint firstAttribute="width" constant="150" id="pjQ-3I-5UK"/>
-                                </constraints>
-                                <state key="normal" image="download"/>
-                                <connections>
-                                    <action selector="saveTapped:" destination="EgH-3H-DDA" eventType="touchUpInside" id="LWr-Jv-1Kl"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Post to Instagram Stories" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dnw-JF-hif">
-                                <rect key="frame" x="110.66666666666669" y="366" width="193" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save to Camera Roll" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xpk-BM-RfO">
-                                <rect key="frame" x="130.66666666666666" y="750" width="152.99999999999997" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="hTi-tW-quJ" firstAttribute="bottom" secondItem="sbd-nk-rA2" secondAttribute="bottom" constant="120" id="CWf-P7-5Bk"/>
-                            <constraint firstItem="Dnw-JF-hif" firstAttribute="centerX" secondItem="hTi-tW-quJ" secondAttribute="centerX" id="HoE-i4-wx1"/>
-                            <constraint firstItem="sbd-nk-rA2" firstAttribute="centerX" secondItem="hTi-tW-quJ" secondAttribute="centerX" id="Oqa-7B-J0e"/>
-                            <constraint firstItem="9tc-z7-UwJ" firstAttribute="top" secondItem="hTi-tW-quJ" secondAttribute="top" constant="120" id="OsP-C0-DFU"/>
-                            <constraint firstItem="xpk-BM-RfO" firstAttribute="centerX" secondItem="hTi-tW-quJ" secondAttribute="centerX" id="SJR-6G-EcR"/>
-                            <constraint firstItem="Dnw-JF-hif" firstAttribute="top" secondItem="9tc-z7-UwJ" secondAttribute="bottom" constant="8" id="ZEk-wK-CaN"/>
-                            <constraint firstItem="xpk-BM-RfO" firstAttribute="top" secondItem="sbd-nk-rA2" secondAttribute="bottom" constant="8" id="gxn-M0-mkg"/>
-                            <constraint firstItem="9tc-z7-UwJ" firstAttribute="centerX" secondItem="hTi-tW-quJ" secondAttribute="centerX" id="iet-oc-dPq"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="hTi-tW-quJ"/>
-                    </view>
-                    <connections>
-                        <outlet property="instaLabel" destination="Dnw-JF-hif" id="3Lf-16-sG1"/>
-                        <outlet property="saveLabel" destination="xpk-BM-RfO" id="Iz0-2N-USe"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="g2c-E1-FAp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3563.7681159420295" y="125.89285714285714"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Nie-c1-UUr">
@@ -221,11 +159,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dcQ-jD-WJO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1755" y="126"/>
+            <point key="canvasLocation" x="1988" y="126"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="download" width="720" height="720"/>
-        <image name="instagram" width="512" height="512"/>
-    </resources>
 </document>
