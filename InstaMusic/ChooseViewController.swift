@@ -9,7 +9,7 @@
 import UIKit
 import MediaPlayer
 
-class ChooseViewController: UIViewController {
+class ChooseViewController: UIViewController, UIPopoverPresentationControllerDelegate {
 
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var simpleContent: SimpleColorView!
@@ -24,39 +24,58 @@ class ChooseViewController: UIViewController {
     var exportImage: UIImage?
     
     @IBOutlet weak var noSongPlayingLabel: UILabel!
+    
+    var count = 100
 
     let messages : [String] = ["Please go to the Music app and begin playing your music.", "If music is playing and image isn't showing up, please add the song to your library, clear the music app and try again."]
-
+    
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-        /*
-        let status = MPMediaLibrary.authorizationStatus()
-        switch status {
-            case .authorized:
-                print("authorized")
-                setUp()
-                getSong()
-                break
-            case .notDetermined:
-                MPMediaLibrary.requestAuthorization() { status in
-                        if status == .authorized {
-                            DispatchQueue.main.async {
-                                self.setUp()
-                                self.getSong()
-                            }
-                        }
-                    }
-                break
-        case .denied:
-            break
-        case .restricted:
-            break
-        @unknown default:
-            break
-        }
- */
+        print(segmentedControl.selectedSegmentIndex)
+//        let status = MPMediaLibrary.authorizationStatus()
+//        switch status {
+//            case .authorized:
+//                print("authorized")
+//                setUp()
+//                getSong()
+//                break
+//            case .notDetermined:
+//                MPMediaLibrary.requestAuthorization() { status in
+//                        if status == .authorized {
+//                            DispatchQueue.main.async {
+//                                self.setUp()
+//                                self.getSong()
+//                            }
+//                        }
+//                    }
+//                break
+//        case .denied:
+//            break
+//        case .restricted:
+//            break
+//        @unknown default:
+//            break
+//        }
+        let backgroundTapped = UITapGestureRecognizer(target: self, action: #selector(self.handleBackgroundTapped(_:)))
+        simpleContent.addGestureRecognizer(backgroundTapped)
         screenshotPurposes()
+    }
+    @objc func handleBackgroundTapped(_ sender: UITapGestureRecognizer? = nil) {
+        let location = sender?.location(in: simpleContent).x
+        let halfway_X = simpleContent.frame.width / 2
+        if location! < halfway_X {
+            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
+            let blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView.frame = simpleContent.backgroundImage.bounds
+            blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            blurEffectView.tag = count
+            simpleContent.backgroundImage.addSubview(blurEffectView)
+            count += 1
+        } else if location! > halfway_X {
+            self.simpleContent.viewWithTag(count)?.removeFromSuperview()
+            count -= 1
+        }
+        
     }
     
     func setUp() {
@@ -110,7 +129,7 @@ class ChooseViewController: UIViewController {
         }
         shareToInstagramStories()
     }
-    @IBAction func saveTapped(_ sender: Any) {
+    func saveTapped() {
         //let imageData = UIImage.pngData(imageExport!)
         UIImageWriteToSavedPhotosAlbum(exportImage!, nil, nil, nil)
         let alert = UIAlertController(title: "Saved", message: "Image saved to camera roll", preferredStyle: .alert)
@@ -124,47 +143,70 @@ class ChooseViewController: UIViewController {
     func instantiateArtworkBackground() {
         instantiate(value: false)
     }
-    
     func instantiate(value: Bool) {
+        let colors = artwork?.getColors()
+
         if value == true {
-            let colors = artwork?.getColors()
-            
             simpleContent.backgroundImage.isHidden = true
             simpleContent.backgroundColor = colors?.background
-        } else {
+        } else if value == false {
             simpleContent.backgroundImage.isHidden = false
             simpleContent.backgroundImage.image = artwork!
-            simpleContent.backgroundImage.blurView.setup(style: UIBlurEffect.Style.light, alpha: 0.99).enable()
+            
+            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
+            let blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView.frame = simpleContent.backgroundImage.bounds
+            blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            simpleContent.backgroundImage.addSubview(blurEffectView)
             
             simpleContent.backgroundImage.contentMode = .scaleAspectFill
         }
         simpleContent.isHidden = false
-
-        let colors = artwork?.getColors()
-        
-        simpleContent.layer.shadowPath = UIBezierPath(roundedRect: simpleContent.layer.bounds, cornerRadius: 0).cgPath
-        simpleContent.layer.shadowColor = colors?.primary.cgColor
-        simpleContent.layer.shadowOpacity = 0.3
-        simpleContent.layer.shadowOffset = CGSize(width: 10, height: 10)
-        simpleContent.layer.shadowRadius = 15
-        simpleContent.layer.masksToBounds = false
         
         simpleContent.artistLabel.text = "by " + artist!
         simpleContent.songTitle.text = song!
         
-        //simpleContent.songImage.image = music_player.nowPlayingItem?.artwork?.image(at: simpleContent.songImage.bounds.size)
         simpleContent.songImage.image = artwork
-        simpleContent.songImage.layer.shadowPath = UIBezierPath(roundedRect: simpleContent.songImage.bounds, cornerRadius: 0).cgPath
-        simpleContent.songImage.layer.shadowColor = colors?.detail.cgColor
-        simpleContent.songImage.layer.shadowOpacity = 0.5
-        simpleContent.songImage.layer.shadowOffset = CGSize(width: 10, height: 10)
-        simpleContent.songImage.layer.shadowRadius = 17
-        simpleContent.songImage.layer.masksToBounds = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { 
+            self.simpleContent.layer.shadowPath = UIBezierPath(roundedRect: self.simpleContent.layer.bounds, cornerRadius: 0).cgPath
+            self.simpleContent.layer.shadowColor = colors?.primary.cgColor
+            self.simpleContent.layer.shadowOpacity = 0.3
+            self.simpleContent.layer.shadowOffset = CGSize(width: 10, height: 10)
+            self.simpleContent.layer.shadowRadius = 15
+            self.simpleContent.layer.masksToBounds = false
+            
+            self.self.simpleContent.songImage.layer.shadowPath = UIBezierPath(roundedRect: self.simpleContent.songImage.bounds, cornerRadius: 0).cgPath
+            self.simpleContent.songImage.layer.shadowColor = colors?.detail.cgColor
+            self.simpleContent.songImage.layer.shadowOpacity = 0.5
+            self.simpleContent.songImage.layer.shadowOffset = CGSize(width: 10, height: 10)
+            self.simpleContent.songImage.layer.shadowRadius = 17
+            self.simpleContent.songImage.layer.masksToBounds = false
+        }
+        
         simpleContent.songTitle.textColor = colors?.primary
         simpleContent.artistLabel.textColor = colors?.secondary
         simpleContent.appleMusic.textColor = colors?.detail
         
         postButton.backgroundColor = colors?.primary
+    }
+    
+    @IBAction func settingsTapped(_ sender: Any) {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "popoverController") as! PopoverViewController
+        vc.preferredContentSize = CGSize(width: UIScreen.main.bounds.width / 1.7, height: 90)
+        vc.index = segmentedControl.selectedSegmentIndex
+        
+        let navController = UINavigationController(rootViewController: vc)
+        navController.modalPresentationStyle = .popover
+        
+        let popover = navController.popoverPresentationController
+        popover?.delegate = self
+        popover?.barButtonItem = sender as! UIBarButtonItem
+        
+        self.present(navController, animated: true, completion: nil)
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
     }
     func hideAndDisable() {
         simpleContent.isHidden = true
@@ -198,7 +240,18 @@ class ChooseViewController: UIViewController {
     private func shareToInstagramStories() {
         guard let imagePNGData = exportImage!.pngData() else { return }
         guard let instagramStoryUrl = URL(string: "instagram-stories://share") else { return }
-        guard UIApplication.shared.canOpenURL(instagramStoryUrl) else { return }
+        guard UIApplication.shared.canOpenURL(instagramStoryUrl) else {
+            let alertController = UIAlertController(title: "Instagram couldn't be opened", message: "Make sure you have the Instagram app downloaded and try again", preferredStyle: .alert)
+            let alertAction = UIAlertAction(title: "Gotchu!", style: .cancel, handler: nil)
+            let saveImage = UIAlertAction(title: "Save to Camera Roll", style: .default, handler: { action in
+                self.saveTapped()
+            })
+            
+            alertController.addAction(alertAction)
+            alertController.addAction(saveImage)
+            present(alertController, animated: true, completion: nil)
+            return
+        }
 
         let itemsToShare: [[String: Any]] = [["com.instagram.sharedSticker.backgroundImage": imagePNGData]]
         let pasteboardOptions: [UIPasteboard.OptionsKey: Any] = [.expirationDate: Date().addingTimeInterval(60 * 5)]

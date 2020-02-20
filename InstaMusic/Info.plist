@@ -26,6 +26,8 @@
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>This allows the app to get the name of the current song, artist, and album artwork.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This allows the app to add the photo to your photo library if Instagram can&apos;t be opened.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

@@ -15,5 +15,4 @@ class SimpleColorView: UIView {
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet weak var backgroundImage: UIImageView!
     @IBOutlet weak var appleMusic: UILabel!
-    
 }
