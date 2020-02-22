@@ -31,34 +31,39 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(segmentedControl.selectedSegmentIndex)
-//        let status = MPMediaLibrary.authorizationStatus()
-//        switch status {
-//            case .authorized:
-//                print("authorized")
-//                setUp()
-//                getSong()
-//                break
-//            case .notDetermined:
-//                MPMediaLibrary.requestAuthorization() { status in
-//                        if status == .authorized {
-//                            DispatchQueue.main.async {
-//                                self.setUp()
-//                                self.getSong()
-//                            }
-//                        }
-//                    }
-//                break
-//        case .denied:
-//            break
-//        case .restricted:
-//            break
-//        @unknown default:
-//            break
-//        }
+
+        let status = MPMediaLibrary.authorizationStatus()
+        simpleContent.isHidden = true
+        switch status {
+            case .authorized:
+                simpleContent.isHidden = false
+                setUp()
+                getSong()
+                break
+            case .notDetermined:
+                MPMediaLibrary.requestAuthorization() { status in
+                        if status == .authorized {
+                            DispatchQueue.main.async {
+                                self.setUp()
+                                self.getSong()
+                            }
+                        }
+                    }
+                break
+        case .denied:
+            let alert = UIAlertController(title: "Music Access Denied", message: "Please go to Settings, Privacy, Media & Apple Music, and enable Music access.", preferredStyle: .alert)
+            let ok = UIAlertAction(title: "Gotchu!", style: .default, handler: nil)
+            alert.addAction(ok)
+            self.present(alert, animated: true, completion: nil)
+            break
+        case .restricted:
+            break
+        @unknown default:
+            break
+        }
         let backgroundTapped = UITapGestureRecognizer(target: self, action: #selector(self.handleBackgroundTapped(_:)))
         simpleContent.addGestureRecognizer(backgroundTapped)
-        screenshotPurposes()
+        //screenshotPurposes()
     }
     @objc func handleBackgroundTapped(_ sender: UITapGestureRecognizer? = nil) {
         let location = sender?.location(in: simpleContent).x
@@ -83,9 +88,9 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
         NotificationCenter.default.addObserver(self,selector: #selector(songChanged),name: NSNotification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,object: nil)
     }
     func screenshotPurposes() {
-        song = "SICKO MODE"
-        artist = "Travis Scott"
-        artwork = UIImage(named: "travis")
+        song = "everytime"
+        artist = "Ariana Grande"
+        artwork = UIImage(named: "ariana")
         instantiate(value: true)
     }
     func getSong() {
@@ -167,7 +172,7 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
         simpleContent.songTitle.text = song!
         
         simpleContent.songImage.image = artwork
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { 
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
             self.simpleContent.layer.shadowPath = UIBezierPath(roundedRect: self.simpleContent.layer.bounds, cornerRadius: 0).cgPath
             self.simpleContent.layer.shadowColor = colors?.primary.cgColor
             self.simpleContent.layer.shadowOpacity = 0.3
