@@ -27,11 +27,16 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
     
     var count = 100
 
-    let messages : [String] = ["Please go to the Music app and begin playing your music.", "If music is playing and image isn't showing up, please add the song to your library, clear the music app and try again."]
+    let messages : [String] = ["Please go to the Music app and begin playing your music.", "If music is playing and image isn't showing up, please add the song to your library, clear the music app and try again.","You have disabled access to Music. Please go to Settings, Privacy, Media & Apple Music, and enable Music access."]
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        noSongPlayingLabel.sizeToFit()
+        noSongPlayingLabel.adjustsFontSizeToFitWidth = true
+        noSongPlayingLabel.textAlignment = .center
+        
+        
         let status = MPMediaLibrary.authorizationStatus()
         simpleContent.isHidden = true
         switch status {
@@ -55,6 +60,7 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
             let ok = UIAlertAction(title: "Gotchu!", style: .default, handler: nil)
             alert.addAction(ok)
             self.present(alert, animated: true, completion: nil)
+            hideAndDisable_2()
             break
         case .restricted:
             break
@@ -63,7 +69,9 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
         }
         let backgroundTapped = UITapGestureRecognizer(target: self, action: #selector(self.handleBackgroundTapped(_:)))
         simpleContent.addGestureRecognizer(backgroundTapped)
-        //screenshotPurposes()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.screenshotPurposes()
+        }
     }
     @objc func handleBackgroundTapped(_ sender: UITapGestureRecognizer? = nil) {
         let location = sender?.location(in: simpleContent).x
@@ -88,9 +96,9 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
         NotificationCenter.default.addObserver(self,selector: #selector(songChanged),name: NSNotification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,object: nil)
     }
     func screenshotPurposes() {
-        song = "everytime"
-        artist = "Ariana Grande"
-        artwork = UIImage(named: "ariana")
+        song = "BUTTERFLY EFFECT"
+        artist = "Travis Scott"
+        artwork = UIImage(named: "travis")
         instantiate(value: true)
     }
     func getSong() {
@@ -149,6 +157,7 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
         instantiate(value: false)
     }
     func instantiate(value: Bool) {
+        unhideAndEnable()
         let colors = artwork?.getColors()
 
         if value == true {
@@ -214,20 +223,30 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
         return .none
     }
     func hideAndDisable() {
+        noSongPlayingLabel.isHidden = false
         simpleContent.isHidden = true
-        segmentedControl.isEnabled = false
+        segmentedControl.isHidden = true
         postButton.isHidden = true
         noSongPlayingLabel.text = messages[0]
     }
-    func hideAndDisableWithTips() {
+    func hideAndDisable_2() {
+        noSongPlayingLabel.isHidden = false
         simpleContent.isHidden = true
-        segmentedControl.isEnabled = false
+        segmentedControl.isHidden = true
+        postButton.isHidden = true
+        noSongPlayingLabel.text = messages[2]
+    }
+    func hideAndDisableWithTips() {
+        noSongPlayingLabel.isHidden = false
+        simpleContent.isHidden = true
+        segmentedControl.isHidden = true
         postButton.isHidden = true
         noSongPlayingLabel.text = messages[1]
     }
     func unhideAndEnable() {
+        noSongPlayingLabel.isHidden = true
         simpleContent.isHidden = false
-        segmentedControl.isEnabled = true
+        segmentedControl.isHidden = false
         postButton.isHidden = false
     }
     func trimSong(songTitle: String) -> String {
