@@ -15,6 +15,9 @@
 		5A6F89E922F1E1DC00B85C40 /* ChooseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F89E822F1E1DC00B85C40 /* ChooseViewController.swift */; };
 		5A6F89F022F1E8A600B85C40 /* SimpleColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F89EF22F1E8A600B85C40 /* SimpleColorView.swift */; };
 		5A6F89F222F2058D00B85C40 /* UIImageColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F89F122F2058D00B85C40 /* UIImageColors.swift */; };
+		5A7343452406FBC900AA860F /* QueryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7343442406FBC800AA860F /* QueryService.swift */; };
+		5A7343472406FC2000AA860F /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7343462406FC2000AA860F /* Track.swift */; };
+		5A734349240700AC00AA860F /* TrackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A734348240700AC00AA860F /* TrackCell.swift */; };
 		5A89614723FDEA420068EF4D /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A89614623FDEA420068EF4D /* PopoverViewController.swift */; };
 		5A89CF3B22F36BE200A1C53B /* UIView+Blur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A89CF3A22F36BE200A1C53B /* UIView+Blur.swift */; };
 /* End PBXBuildFile section */
@@ -31,6 +34,9 @@
 		5A6F89E822F1E1DC00B85C40 /* ChooseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseViewController.swift; sourceTree = "<group>"; };
 		5A6F89EF22F1E8A600B85C40 /* SimpleColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleColorView.swift; sourceTree = "<group>"; };
 		5A6F89F122F2058D00B85C40 /* UIImageColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageColors.swift; sourceTree = "<group>"; };
+		5A7343442406FBC800AA860F /* QueryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryService.swift; sourceTree = "<group>"; };
+		5A7343462406FC2000AA860F /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
+		5A734348240700AC00AA860F /* TrackCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackCell.swift; sourceTree = "<group>"; };
 		5A89614623FDEA420068EF4D /* PopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
 		5A89CF3A22F36BE200A1C53B /* UIView+Blur.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Blur.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -86,6 +92,9 @@
 				5A59D4CC22F0A0470029BEA2 /* AppDelegate.swift */,
 				5A59D4CE22F0A0470029BEA2 /* SceneDelegate.swift */,
 				5A6F89E822F1E1DC00B85C40 /* ChooseViewController.swift */,
+				5A734348240700AC00AA860F /* TrackCell.swift */,
+				5A7343462406FC2000AA860F /* Track.swift */,
+				5A7343442406FBC800AA860F /* QueryService.swift */,
 				5A89614623FDEA420068EF4D /* PopoverViewController.swift */,
 				5A59D4D222F0A0470029BEA2 /* Main.storyboard */,
 				5A18AD07235FA2760093FAA7 /* Supporting Files */,
@@ -206,6 +215,9 @@
 				5A6F89E922F1E1DC00B85C40 /* ChooseViewController.swift in Sources */,
 				5A89614723FDEA420068EF4D /* PopoverViewController.swift in Sources */,
 				5A59D4CD22F0A0470029BEA2 /* AppDelegate.swift in Sources */,
+				5A7343452406FBC900AA860F /* QueryService.swift in Sources */,
+				5A734349240700AC00AA860F /* TrackCell.swift in Sources */,
+				5A7343472406FC2000AA860F /* Track.swift in Sources */,
 				5A6F89F222F2058D00B85C40 /* UIImageColors.swift in Sources */,
 				5A6F89F022F1E8A600B85C40 /* SimpleColorView.swift in Sources */,
 				5A59D4CF22F0A0470029BEA2 /* SceneDelegate.swift in Sources */,

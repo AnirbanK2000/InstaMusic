@@ -9,8 +9,9 @@
 import UIKit
 import MediaPlayer
 
-class ChooseViewController: UIViewController, UIPopoverPresentationControllerDelegate {
-
+class ChooseViewController: UIViewController, UIPopoverPresentationControllerDelegate, UISearchResultsUpdating {
+    
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var simpleContent: SimpleColorView!
     @IBOutlet weak var postButton: UIButton!
@@ -20,41 +21,45 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
     var artist : String?
     
     let music_player = MPMusicPlayerController.systemMusicPlayer
-
+    
     var exportImage: UIImage?
     
     @IBOutlet weak var noSongPlayingLabel: UILabel!
     
     var count = 100
-
-    let messages : [String] = ["Please go to the Music app and begin playing your music.", "If music is playing and image isn't showing up, please add the song to your library, clear the music app and try again.","You have disabled access to Music. Please go to Settings, Privacy, Media & Apple Music, and enable Music access."]
     
+    let messages : [String] = ["Please go to the Music app and begin playing your music or search for a song in the app.", "If music is playing and image isn't showing up, please add the song to your library, clear the music app and try again.","You have disabled access to Music, please go to Settings, Privacy, Media & Apple Music, and enable Music access or use the search feature in the app."]
+
+    var searchController = UISearchController(searchResultsController: nil)
+
+    let queryService = QueryService()
+    var searchResults: [Track] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         noSongPlayingLabel.sizeToFit()
         noSongPlayingLabel.adjustsFontSizeToFitWidth = true
         noSongPlayingLabel.textAlignment = .center
         
-        
         let status = MPMediaLibrary.authorizationStatus()
         simpleContent.isHidden = true
         switch status {
-            case .authorized:
-                simpleContent.isHidden = false
-                setUp()
-                getSong()
-                break
-            case .notDetermined:
-                MPMediaLibrary.requestAuthorization() { status in
-                        if status == .authorized {
-                            DispatchQueue.main.async {
-                                self.setUp()
-                                self.getSong()
-                            }
-                        }
+        case .authorized:
+            simpleContent.isHidden = false
+            setUp()
+            getSong()
+            break
+        case .notDetermined:
+            MPMediaLibrary.requestAuthorization() { status in
+                if status == .authorized {
+                    DispatchQueue.main.async {
+                        self.setUp()
+                        self.getSong()
                     }
-                break
+                }
+            }
+            break
         case .denied:
             let alert = UIAlertController(title: "Music Access Denied", message: "Please go to Settings, Privacy, Media & Apple Music, and enable Music access.", preferredStyle: .alert)
             let ok = UIAlertAction(title: "Gotchu!", style: .default, handler: nil)
@@ -69,9 +74,13 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
         }
         let backgroundTapped = UITapGestureRecognizer(target: self, action: #selector(self.handleBackgroundTapped(_:)))
         simpleContent.addGestureRecognizer(backgroundTapped)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.screenshotPurposes()
-        }
+        //        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        //            self.screenshotPurposes()
+        //        }
+        self.tableView.isHidden = true
+        
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
     }
     @objc func handleBackgroundTapped(_ sender: UITapGestureRecognizer? = nil) {
         let location = sender?.location(in: simpleContent).x
@@ -159,7 +168,7 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
     func instantiate(value: Bool) {
         unhideAndEnable()
         let colors = artwork?.getColors()
-
+        
         if value == true {
             simpleContent.backgroundImage.isHidden = true
             simpleContent.backgroundColor = colors?.background
@@ -204,21 +213,18 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
         postButton.backgroundColor = colors?.primary
     }
     
-    @IBAction func settingsTapped(_ sender: Any) {
-        let vc = storyboard?.instantiateViewController(withIdentifier: "popoverController") as! PopoverViewController
-        vc.preferredContentSize = CGSize(width: UIScreen.main.bounds.width / 1.7, height: 90)
-        vc.index = segmentedControl.selectedSegmentIndex
+    @IBAction func searchTapped(_ sender: Any) {
+        searchController = UISearchController(searchResultsController: nil)
         
-        let navController = UINavigationController(rootViewController: vc)
-        navController.modalPresentationStyle = .popover
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.keyboardType = UIKeyboardType.asciiCapable
         
-        let popover = navController.popoverPresentationController
-        popover?.delegate = self
-        popover?.barButtonItem = sender as! UIBarButtonItem
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.placeholder = "Search Songs"
         
-        self.present(navController, animated: true, completion: nil)
+        searchController.obscuresBackgroundDuringPresentation = false
+        present(searchController, animated: true, completion: nil)
     }
-    
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
@@ -265,7 +271,7 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
         guard let imagePNGData = exportImage!.pngData() else { return }
         guard let instagramStoryUrl = URL(string: "instagram-stories://share") else { return }
         guard UIApplication.shared.canOpenURL(instagramStoryUrl) else {
-            let alertController = UIAlertController(title: "Instagram couldn't be opened", message: "Make sure you have the Instagram app downloaded and try again", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Couldn't share", message: "In order to share to Instagram, you need to have it downloaded. You can save it to your camera roll for now.", preferredStyle: .alert)
             let alertAction = UIAlertAction(title: "Gotchu!", style: .cancel, handler: nil)
             let saveImage = UIAlertAction(title: "Save to Camera Roll", style: .default, handler: { action in
                 self.saveTapped()
@@ -276,11 +282,88 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
             present(alertController, animated: true, completion: nil)
             return
         }
-
+        
         let itemsToShare: [[String: Any]] = [["com.instagram.sharedSticker.backgroundImage": imagePNGData]]
         let pasteboardOptions: [UIPasteboard.OptionsKey: Any] = [.expirationDate: Date().addingTimeInterval(60 * 5)]
         UIPasteboard.general.setItems(itemsToShare, options: pasteboardOptions)
         UIApplication.shared.open(instagramStoryUrl, options: [:], completionHandler: nil)
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchingTerms = searchController.searchBar.text else { return }
+        if searchingTerms.count == 0 {
+            self.tableView.isHidden = true
+        }
+        if searchingTerms.count > 0 {
+            self.tableView.isHidden = false
+            
+            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            
+            queryService.getSearchResults(searchTerm: searchingTerms) { [weak self] results, errorMessage in
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                
+                if let results = results {
+                    self?.searchResults = results
+                    self?.tableView.reloadData()
+                    self?.tableView.setContentOffset(CGPoint.zero, animated: false)
+                }
+                
+                if !errorMessage.isEmpty {
+                    print("Search error: " + errorMessage)
+                }
+            }
+            
+        }
+    }
+    
+}
+
+extension ChooseViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: TrackCell = tableView.dequeueReusableCell(withIdentifier: TrackCell.identifier,
+                                                            for: indexPath) as! TrackCell
+        
+        let track = searchResults[indexPath.row]
+        cell.configure(track: track)
+
+        return cell
+    }
+  
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return searchResults.count
+    
+  }
+}
+extension ChooseViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //When user taps cell, play the local file, if it's downloaded.
+    
+        let track = searchResults[indexPath.row]
+        song = searchResults[indexPath.row].name
+        artist = searchResults[indexPath.row].artist
+        var imageURL = URL(string: searchResults[indexPath.row].enlargedURL)
+            
+        downloadImage_2(from: imageURL!)
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        searchController.isActive = false
+        tableView.isHidden = true
+    }
+    func getData_2(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    }
+    func downloadImage_2(from url: URL) {
+        print("Download Started")
+        getData_2(from: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            print(response?.suggestedFilename ?? url.lastPathComponent)
+            print("Download Finished")
+            DispatchQueue.main.async() {
+                self.artwork = UIImage(data: data)
+                self.instantiateSimple()
+            }
+        }
     }
 }
 extension StringProtocol { // for Swift 4.x syntax you will needed also to constrain the collection Index to String Index - `extension StringProtocol where Index == String.Index`
