@@ -44,6 +44,7 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
         
         let status = MPMediaLibrary.authorizationStatus()
         simpleContent.isHidden = true
+        instaInstalled()
         switch status {
         case .authorized:
             simpleContent.isHidden = false
@@ -75,7 +76,7 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
         let backgroundTapped = UITapGestureRecognizer(target: self, action: #selector(self.handleBackgroundTapped(_:)))
         simpleContent.addGestureRecognizer(backgroundTapped)
         //        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-        //            self.screenshotPurposes()
+                    //self.screenshotPurposes()
         //        }
         self.tableView.isHidden = true
         
@@ -99,15 +100,25 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
         }
         
     }
+    func instaInstalled() {
+        guard let instagramStoryUrl = URL(string: "instagram-stories://share") else { return }
+        if UIApplication.shared.canOpenURL(instagramStoryUrl)
+        {
+            postButton.setTitle("Share to Insta Stories", for: .normal)
+
+        } else {
+            postButton.setTitle("Save to Camera Roll", for: .normal)
+        }
+    }
     
     func setUp() {
         music_player.beginGeneratingPlaybackNotifications()
         NotificationCenter.default.addObserver(self,selector: #selector(songChanged),name: NSNotification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,object: nil)
     }
     func screenshotPurposes() {
-        song = "BUTTERFLY EFFECT"
-        artist = "Travis Scott"
-        artwork = UIImage(named: "travis")
+        song = "everytime"
+        artist = "Ariana Grande"
+        artwork = UIImage(named: "ariana")
         instantiate(value: true)
     }
     func getSong() {
@@ -137,8 +148,10 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
     @IBAction func backgroundStyleChanged(_ sender: Any) {
         switch segmentedControl.selectedSegmentIndex {
         case 0:
+            instaInstalled()
             instantiateSimple()
         case 1:
+            instaInstalled()
             instantiateArtworkBackground()
         default:
             break
@@ -153,11 +166,22 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
     }
     func saveTapped() {
         //let imageData = UIImage.pngData(imageExport!)
-        UIImageWriteToSavedPhotosAlbum(exportImage!, nil, nil, nil)
-        let alert = UIAlertController(title: "Saved", message: "Image saved to camera roll", preferredStyle: .alert)
-        let ok = UIAlertAction(title: "Ok", style: .default, handler: nil)
-        alert.addAction(ok)
-        self.present(alert, animated: true, completion: nil)
+        
+        //UIImageWriteToSavedPhotosAlbum(exportImage!, nil, nil, nil)
+        UIImageWriteToSavedPhotosAlbum(exportImage!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+
+    }
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            // we got back an error!
+            let ac = UIAlertController(title: "Save error", message: error.localizedDescription + "Please make sure you have enabled InstaMusic's ability to add photos to your library.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        } else {
+            let ac = UIAlertController(title: "Saved!", message: "The image has been saved to your photos.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
     }
     func instantiateSimple() {
         instantiate(value: true)
@@ -166,6 +190,7 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
         instantiate(value: false)
     }
     func instantiate(value: Bool) {
+        instaInstalled()
         unhideAndEnable()
         let colors = artwork?.getColors()
         
@@ -268,25 +293,18 @@ class ChooseViewController: UIViewController, UIPopoverPresentationControllerDel
         return songTitle
     }
     private func shareToInstagramStories() {
-        guard let imagePNGData = exportImage!.pngData() else { return }
-        guard let instagramStoryUrl = URL(string: "instagram-stories://share") else { return }
-        guard UIApplication.shared.canOpenURL(instagramStoryUrl) else {
-            let alertController = UIAlertController(title: "Couldn't share", message: "In order to share to Instagram, you need to have it downloaded. You can save it to your camera roll for now.", preferredStyle: .alert)
-            let alertAction = UIAlertAction(title: "Gotchu!", style: .cancel, handler: nil)
-            let saveImage = UIAlertAction(title: "Save to Camera Roll", style: .default, handler: { action in
-                self.saveTapped()
-            })
-            
-            alertController.addAction(alertAction)
-            alertController.addAction(saveImage)
-            present(alertController, animated: true, completion: nil)
-            return
-        }
         
-        let itemsToShare: [[String: Any]] = [["com.instagram.sharedSticker.backgroundImage": imagePNGData]]
-        let pasteboardOptions: [UIPasteboard.OptionsKey: Any] = [.expirationDate: Date().addingTimeInterval(60 * 5)]
-        UIPasteboard.general.setItems(itemsToShare, options: pasteboardOptions)
-        UIApplication.shared.open(instagramStoryUrl, options: [:], completionHandler: nil)
+        if postButton.titleLabel?.text == "Share to Insta Stories" {
+            guard let imagePNGData = exportImage!.pngData() else { return }
+            guard let instagramStoryUrl = URL(string: "instagram-stories://share") else { return }
+            guard UIApplication.shared.canOpenURL(instagramStoryUrl) else { return }
+            let itemsToShare: [[String: Any]] = [["com.instagram.sharedSticker.backgroundImage": imagePNGData]]
+            let pasteboardOptions: [UIPasteboard.OptionsKey: Any] = [.expirationDate: Date().addingTimeInterval(60 * 5)]
+            UIPasteboard.general.setItems(itemsToShare, options: pasteboardOptions)
+            UIApplication.shared.open(instagramStoryUrl, options: [:], completionHandler: nil)
+        } else {
+            saveTapped()
+        }
     }
     
     func updateSearchResults(for searchController: UISearchController) {
